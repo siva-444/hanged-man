@@ -1,0 +1,4 @@
+export const KEYS = {
+  HIGH_SCORE: "HIGH_SCORE",
+  ROUND_DETAILS: "ROUND_DETAILS"
+}
