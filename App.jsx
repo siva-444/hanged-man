@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useState } from 'react'
-import { StyleSheet, Text, View, TextInput, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput } from 'react-native';
 
 import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
-import * as storageHelper from './src/helpers/storage'
-import { Button, GameBoard, WinBoard } from './src/components'
-import resource from './resource.json'
+import * as storageHelper from './src/helpers/storage';
+import { Button, GameBoard, WinBoard } from './src/components';
+import alert from './src/helpers/alert';
+import resource from './resource.json';
 
-const { words } = resource
+const { words } = resource;
 
 export default function App() {
   const currentPlayer = new Date().getTime()
@@ -24,8 +24,7 @@ export default function App() {
   const assignWord = () => {
     const randomIndex = Math.floor(Math.random() * words.length);
     const takingWord = words.splice(randomIndex, 1);
-
-    setWord(takingWord[0])
+    setWord(takingWord[0]);
   }
 
   const resetGame = () => {
@@ -80,8 +79,7 @@ export default function App() {
    */
   const checkPressed = useCallback(() => {
     if (foundCharacter.includes(enteredCharacter)) {
-
-      Alert.alert("Character already entered")
+      alert("Character already entered")
     } else if (word.includes(enteredCharacter)) {
 
       const foundCharacterTemp = [...foundCharacter, enteredCharacter]
@@ -91,7 +89,7 @@ export default function App() {
       }
     } else {
       if (livesCount === 0) {
-        Alert.alert("Game Over", "You don't have enough lives to continue", [
+        alert("Game Over", "You don't have enough lives to continue", [
           {
             text: "Reload",
             onPress: reloadGame,
@@ -99,7 +97,7 @@ export default function App() {
           }
         ], { cancelable: false })
       } else {
-        Alert.alert("Wrong Guess", livesCount === 1 ? "You have no lives for the next try" : `Still you have ${livesCount - 1} lives`)
+        alert("Wrong Guess", livesCount === 1 ? "You have no lives for the next try" : `Still you have ${livesCount - 1} lives`)
         setLivesCount(livesCount - 1);
       }
     }
@@ -112,12 +110,11 @@ export default function App() {
    * 2.Need to update the High score from local
    */
   useEffect(() => {
-    assignWord()
-    storageHelper.getHighScore().then(high_score => setHighScore(high_score ?? 0))
+    assignWord();
+    storageHelper.getHighScore().then(high_score => setHighScore(high_score ?? 0));
   }, []);
   return (
-
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <StatusBar style="auto" />
       <Text style={styles.title}>The Hanged Man</Text>
       <Text style={styles.subHeader}>Round-{roundDetails.length + 1}-{word}</Text>
@@ -131,7 +128,7 @@ export default function App() {
           </>
         }
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
